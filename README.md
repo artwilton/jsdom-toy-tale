@@ -23,7 +23,7 @@ When the page loads, make a 'GET' request to fetch all the toy objects. With the
 response data, make a `<div class="card">` for each toy and add it to the
 toy-collection `div`.
 
-## Add Toy Info to the Card
+## Add Toy Info to the Card 
 
 Each card should have the following child elements:
 
