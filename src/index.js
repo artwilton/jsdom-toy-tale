@@ -64,8 +64,10 @@ const sampleData = {
 
 // submitData(sampleData)
 
+
+
 const toyForm = document.querySelector('.add-toy-form')
-const likeButton = document.querySelector('.like-btn')
+const likeButton = document.querySelectorAll('.like-btn')
 
 toyForm.addEventListener('submit', function(event) {
     event.preventDefault()
@@ -73,11 +75,6 @@ toyForm.addEventListener('submit', function(event) {
 
   }
 )
-
-// else if (event.target.matches(likeButton)) {
-//   console.log("add likes")
-// }
-
 
 function submitData(formData) {
     return fetch( 'http://localhost:3000/toys', {
@@ -103,7 +100,47 @@ function submitData(formData) {
     } )
 }
 
-// for each reference
-// const object = { a: 1, b: 2, c: 3 };
-// for (const property in object) {  console.log(`${property}: ${object[property]}`);}
-// expected output:// "a: 1"// "b: 2"// "c: 3"
+document.addEventListener('click', function(event) {
+  likeClick(event)
+})
+
+function likeClick(event) {
+  if (event.target.className === "like-btn") {
+    const likeButton = event.target
+    const card = likeButton.closest(".card")
+    const id = card.dataset.id
+    const likeTag = card.querySelector("p")
+    
+    // get the donation amount from the DOM
+    const likeAmount = parseInt(likeTag.textContent[0], 10)  + 1
+
+    addLikes(id, likeAmount)
+      .then(updatedLikes => {
+        console.log('Success:', updatedLikes);
+
+        likeTag.textContent = updatedLikes.likes + " Likes"
+      })
+      .catch(error => {
+        alert(error)
+      })
+  }
+}
+
+function addLikes(id, likeAmount) {
+  return fetch(`http://localhost:3000/toys/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        likes: likeAmount
+      }),
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error("Error")
+        }
+      })
+}
