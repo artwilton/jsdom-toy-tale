@@ -28,12 +28,6 @@ function initialize() {
 function renderAllToys(toyData) {
     toyData.forEach(createCard)
 }
-  // function renderAllAnimals(animalData) {
-  //     .forEach takes a callback function (function definition/reference); renderOneAnimal is a function reference
-  //     animalData.forEach(renderOneAnimal)
-  //   }
-
-
 
 function createCard(toyObj) {
   const div = document.createElement('div')
@@ -52,66 +46,64 @@ function addToToyCollection(card) {
   toyCollection.append(card)
 }
 
-
-
-
-// const testCard = createCard("test name", "url", "3")
 initialize()
-// put card on dom
 
-/********** Render Functions **********/ 
-// takes one animal object and creates the necessary DOM elements
-// function renderOneAnimal(animalObj) {
-//   // step 1. create the outer element using createElement (& assign necessary attributes)
-//   const card = document.createElement("li")
-//   card.className = "card"
-//   card.dataset.id = animalObj.id
-//   // step 2. use innerHTML to create all of its children
-//   card.innerHTML = `
-//   <div class="image">
-//     <img src="${animalObj.imageUrl}" alt="${animalObj.name}">
-//     <button class="button delete-button" data-action="delete">X</button>
-//   </div>
-//   <div class="content">
-//     <h4>${animalObj.name}</h4>
-//     <div class="donations">
-//       $<span class="donation-count">${animalObj.donations}</span> Donated
-//     </div>
-//     <p class="description">${animalObj.description}</p>
-//   </div>
-//   <button class="button donate-button" data-action="donate">
-//     Donate $10
-//   </button>
-//   `
-//   // step 3. slap it on the DOM!
-//   animalList.append(card)
-// }
-// function renderAllAnimals(animalData) {
-//   // .forEach takes a callback function (function definition/reference); renderOneAnimal is a function reference
-//   animalData.forEach(renderOneAnimal)
-// }
-// /********** Initial Render **********/
-// function initialize() {
-//   fetch("http://localhost:3000/animals")
-//     .then(response => response.json())
-//     .then(renderAllAnimals)
-  // animalData is an array of animal objects from data.js
+
+
+body: JSON.stringify({
+  "name": "Jessie",
+  "image": "https://vignette.wikia.nocookie.net/p__/images/8/88/Jessie_Toy_Story_3.png/revision/latest?cb=20161023024601&path-prefix=protagonist",
+  "likes": 0
+})
+
+const sampleData = {
+  name: "Jessie",
+  image: "https://vignette.wikia.nocookie.net/p__/images/8/88/Jessie_Toy_Story_3.png/revision/latest?cb=20161023024601&path-prefix=protagonist",
+  likes: 0
+}
+
+// submitData(sampleData)
+
+const toyForm = document.querySelector('.add-toy-form')
+const likeButton = document.querySelector('.like-btn')
+
+toyForm.addEventListener('submit', function(event) {
+    event.preventDefault()
+    submitData(event.target)
+
+  }
+)
+
+// else if (event.target.matches(likeButton)) {
+//   console.log("add likes")
 // }
 
-// get response data
-// for each toy object make a <div class="card">
-// each card will have H2, img, p, button, and dataset id tags
 
-// when done looks like this:
+function submitData(formData) {
+    return fetch( 'http://localhost:3000/toys', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify( {
+        name: formData.name.value,
+        image: formData.image.value,
+        likes: 0
+      } )
+    } )
+    .then( function ( response ) {
+        return response.json()
+    } )
+    .then( function ( toyObj ) {
+      createCard(toyObj)
+    } )
+    .catch( function ( error ) {
+        document.body.innerHTML = error.message
+    } )
+}
 
-// <div class="card">
-//     <h2>Woody</h2>
-//     <img src=toy_image_url class="toy-avatar" />
-//     <p>4 Likes </p>
-//     <button class="like-btn">Like <3</button>
-//   </div>
-
-
+// for each reference
 // const object = { a: 1, b: 2, c: 3 };
 // for (const property in object) {  console.log(`${property}: ${object[property]}`);}
 // expected output:// "a: 1"// "b: 2"// "c: 3"

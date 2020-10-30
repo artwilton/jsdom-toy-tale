@@ -1,4 +1,4 @@
-# Toy Tale
+<!-- # Toy Tale
 
 You've got a friend in need! Your friend Andy recently misplaced all their toys!
 Help Andy recover their toys and get the toys back in the toy collection.
@@ -41,7 +41,7 @@ After all of that, the toy card should resemble:
     <p>4 Likes </p>
     <button class="like-btn">Like <3</button>
   </div>
-```
+``` -->
 
 ## Add a New Toy
 
